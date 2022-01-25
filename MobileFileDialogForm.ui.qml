@@ -17,6 +17,9 @@ Page {
     property alias btnSDCard: btnSDCard
     property alias btnHome: btnHome
     property alias btnUp: btnUp
+    property alias rbnName: rbnName
+    property alias rbnSize: rbnSize
+    property alias rbnDate: rbnDate
     property alias txtMFDInput: txtMFDInput
     property alias lblMFDInput: lblMFDInput
     property alias lblDirectoryName: lblDirectoryName
@@ -26,6 +29,8 @@ Page {
     property string currentFileName: ""
     property bool bShowFiles: true
     property bool bIsAdminModus: false
+    property int iSortField: FolderListModel.Unsorted
+    property bool isReverseOrder: false
 
     title: qsTr("Select file")
 
@@ -118,6 +123,8 @@ Page {
             showFiles: bShowFiles
             showHidden: bIsAdminModus
             nameFilters: ["*"]
+            sortReversed: isReverseOrder
+            sortField: iSortField
         }
 
         highlight: Rectangle {
@@ -139,6 +146,62 @@ Page {
         anchors.bottom: lblMFDInput.top
         anchors.bottomMargin: 5
     }
+
+    ButtonGroup {
+        buttons: rbnOrder.children
+    }
+
+//    Frame {
+
+    RowLayout {
+        id: rbnOrder
+
+        anchors.left: chbExtendedInfos.right
+        anchors.leftMargin: 15
+        anchors.bottom: lblMFDInput.top
+        anchors.bottomMargin: 5
+
+        Label {
+                text: qsTr("Sort after:")
+            }
+        RadioButton {
+            id: rbnUnsorted
+            checked: iSortField == FolderListModel.Unsorted
+            onClicked: iSortField = FolderListModel.Unsorted
+            text: qsTr("Unsorted")
+        }
+        RadioButton {
+            id: rbnName
+            checked: iSortField == FolderListModel.Name
+            onClicked: iSortField = FolderListModel.Name
+            text: qsTr("Name")
+        }
+        RadioButton {
+            id: rbnSize
+            checked: iSortField == FolderListModel.Size
+            onClicked: iSortField = FolderListModel.Size
+            text: qsTr("Size")
+        }
+        RadioButton {
+            id: rbnDate
+            checked: iSortField == FolderListModel.Time
+            onClicked: iSortField = FolderListModel.Time
+            text: qsTr("Date")
+        }
+    }
+//    }
+
+    CheckBox {
+        id: chbRevertOrder
+        text: qsTr("Revert order")
+        checked: isReverseOrder
+        onClicked: isReverseOrder = chbRevertOrder.checked
+        anchors.left: rbnOrder.right
+        anchors.leftMargin: 15
+        anchors.bottom: lblMFDInput.top
+        anchors.bottomMargin: 5
+    }
+
 
     Label {
         id: lblMFDInput

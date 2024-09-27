@@ -41,7 +41,8 @@ jobs:
         py7zrversion: # optional, default is ==0.6
         # Any extra arguments to append to the back
         extra: # optional
-        tools: 'tools_ifw,4.7.0-0-202402231255,qt.tools.ifw.47'
+        tools: 'tools_ifw'
+        #tools: 'tools_ifw,4.7.0-0-202402231255,qt.tools.ifw.47'
     - name: Install 7Zip PowerShell Module
       shell: powershell
       run: Install-Module 7Zip4PowerShell -Force -Verbose

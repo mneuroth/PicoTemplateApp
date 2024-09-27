@@ -1,4 +1,4 @@
-QT += quick svg printsupport
+QT += quick quickcontrols2 qml svg printsupport
 
 android {
     lessThan(QT_MAJOR_VERSION, 6): QT += purchasing

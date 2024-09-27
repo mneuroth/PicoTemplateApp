@@ -50,7 +50,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: mymindstorm/setup-emsdk@v7
-    - uses: jurplel/install-qt-action@v2
+    - uses: jurplel/install-qt-action@v4
       with:
         # Directory to install Qt
         dir: # optional

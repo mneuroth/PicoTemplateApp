@@ -1,11 +1,21 @@
+#include <Qt>
+
 #include "applicationdata.h"
 //#include "androidtasks.h"
 #include "shareutils.hpp"
 #include "storageaccess.h"
 
 #if defined(Q_OS_ANDROID)
-#include "android/androidshareutils.hpp"
+//#include "android/androidshareutils.hpp"
+#if QT_VERSION < 0x060000
 #include <QtAndroidExtras>
+#else
+#include <QJniObject>
+#include <QCoreApplication>
+//#include <QtCore/6.2.2/QtCore/private/qandroidextras_p.h>
+#define QAndroidJniObject QJniObject
+#define QAndroidJniEnvironment QJniEnvironment
+#endif
 #endif
 
 #include <QDir>
@@ -31,8 +41,13 @@
 bool HasAccessToSDCardPath()
 {
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < 0x060000
     QtAndroid::PermissionResult result = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
     return result == QtAndroid::PermissionResult::Granted;
+#else
+    QFuture<QtAndroidPrivate::PermissionResult> result = QtAndroidPrivate::checkPermission(QtAndroidPrivate::PermissionType::Storage);
+    return result.result() == QtAndroidPrivate::PermissionResult::Authorized;
+#endif
 #else
     return true;
 #endif
@@ -44,8 +59,13 @@ bool GrantAccessToSDCardPath(/*QObject * parent*/)
     //Q_UNUSED(parent)
     QStringList permissions;
     permissions.append("android.permission.WRITE_EXTERNAL_STORAGE");
+#if QT_VERSION < 0x060000
     QtAndroid::PermissionResultMap result = QtAndroid::requestPermissionsSync(permissions);
     if( result.count()!=1 && result["android.permission.WRITE_EXTERNAL_STORAGE"]!=QtAndroid::PermissionResult::Granted )
+#else
+    QFuture<QtAndroidPrivate::PermissionResult> result = QtAndroidPrivate::requestPermission(QtAndroidPrivate::PermissionType::Storage);
+    if( result.result()!=QtAndroidPrivate::PermissionResult::Authorized )
+#endif
     {
         //QMessageBox::warning(parent, QObject::tr("Access rights problem"), QObject::tr("Can not access the path to the external storage, please enable rights in settings for this application!"));
         return false;
@@ -64,7 +84,7 @@ ApplicationData::ApplicationData(QObject *parent, ShareUtils * pShareUtils, Stor
       m_aEngine(aEngine),
       m_bUseLocalFileDialog(false),
       m_bIsAdmin(false),
-      m_bIsMobileUI(false)
+      m_bIsMobileUI(true)
 {
     m_pShareUtils = pShareUtils;
 #if defined(Q_OS_ANDROID)
@@ -143,6 +163,7 @@ void ApplicationData::setMobileUI(bool value)
 
 bool ApplicationData::isUseLocalFileDialog() const
 {
+    qDebug() << "isUseLocalFileDialog()" << Qt::endl;
     return m_bUseLocalFileDialog;
 }
 
@@ -377,7 +398,11 @@ static QStringList GetOriginalExternalFilesDirs(/*const char *directoryField = 0
     QStringList result;
 
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < 0x060000
     QAndroidJniObject appCtx = QtAndroid::androidContext();
+#else
+    QAndroidJniObject appCtx = QNativeInterface::QAndroidApplication::context();
+#endif
     if (!appCtx.isValid())
         return QStringList();
 
@@ -570,7 +595,9 @@ void ApplicationData::writePdfFile(const QString & filename, const QString & tex
 #else
     QPrinter printer(QPrinter::PrinterResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
+#if QT_VERSION < 0x060000
     printer.setPaperSize(QPrinter::A4);
+#endif
     printer.setOutputFileName(filename);
     printer.setPageMargins(QMarginsF(30, 30, 30, 30));
 
@@ -587,7 +614,9 @@ void ApplicationData::writePdfFile(const QString & filename, const QString & tex
     QTextCharFormat txtformat = QTextCharFormat();
 
     QTextDocument doc;
+#if QT_VERSION < 0x060000
     doc.setPageSize(printer.pageRect().size());
+#endif
 
     QTextCursor* cursor = new QTextCursor(&doc);
 

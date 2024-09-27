@@ -4,12 +4,16 @@
 
 #include "shareutils.hpp"
 
+#undef _DISABLE_ANDROID_SHAREUTILS
+
 #ifdef Q_OS_IOS
 #include "ios/iosshareutils.hpp"
 #endif
 
 #ifdef Q_OS_ANDROID
+#ifndef _DISABLE_ANDROID_SHAREUTILS
 #include "android/androidshareutils.hpp"
+#endif
 #endif
 
 ShareUtils::ShareUtils(QObject *parent)
@@ -18,7 +22,11 @@ ShareUtils::ShareUtils(QObject *parent)
 #if defined(Q_OS_IOS)
     mPlatformShareUtils = new IosShareUtils(this);
 #elif defined(Q_OS_ANDROID)
+#ifndef _DISABLE_ANDROID_SHAREUTILS
     mPlatformShareUtils = new AndroidShareUtils(this);
+#else
+    mPlatformShareUtils = new PlatformShareUtils(this);
+#endif
 #else
     mPlatformShareUtils = new PlatformShareUtils(this);
 #endif

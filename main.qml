@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Dialogs 1.2
+import Qt.labs.platform 1.1 as Dialog
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
 
@@ -8,7 +9,7 @@ ApplicationWindow {
     width: 800
     height: 600
     visible: true
-    title: qsTr("Pico App")
+    title: qsTr("Pico Template App")
 
     property string currentFileName: qsTr("unknown.txt")
     property string currentDecodedFileName: ""
@@ -16,6 +17,7 @@ ApplicationWindow {
 
     property int iconSize: 40
     property int defaultIconSize: 40
+    property int minimalIconSize: 12
 
     function setFileName(fileUri, decodedFileUri) {
         currentFileName = fileUri
@@ -63,7 +65,7 @@ ApplicationWindow {
     }
 
     function triggerSaveAsFile() {
-        if( !applicationData.isMobileUI )
+        if( !settings.mobileUI )
         {
             fileDialog.openMode = false
             fileDialog.folder = "."
@@ -90,7 +92,7 @@ ApplicationWindow {
         {
             applicationData.getOpenFileContentAsync("*.txt")
         }
-        else if( !applicationData.isMobileUI )
+        else if( !settings.mobileUI )
         {
             fileDialog.openMode = true
             fileDialog.folder = "."
@@ -114,6 +116,7 @@ ApplicationWindow {
 
     function showSettingsDialog() {
         settingsDialog.chbUseToolBar.checked = settings.useToolBar
+        settingsDialog.chbMobileUI.checked = settings.mobileUI
         stackView.push(settingsDialog)
     }
 
@@ -129,7 +132,7 @@ ApplicationWindow {
         ToolButton {
             id: toolButton
             //text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            icon.source: stackView.depth > 1 ? "back" : "menu_bars"
+            icon.source: stackView.depth > 1 ? "/back.svg" : "/menu_bars.svg"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
             anchors.left: parent.left
             onClicked: {
@@ -149,18 +152,20 @@ ApplicationWindow {
         ToolButton {
             id: menuButton
             //text: "\u22EE"
-            icon.source: "menu.svg"
+            enabled: !isDialogOpen()
+            icon.source: "/menu.svg"
             font.pixelSize: Qt.application.font.pixelSize * 2.0
             anchors.right: parent.right
             onClicked: menu.open()
 
             Menu {
                 id: menu
+                enabled: !isDialogOpen()
                 y: menuButton.height
 
                 MenuItem {
                     text: qsTr("Open")
-                    //icon.source: "open.svg"
+                    //icon.source: "/open.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         triggerOpenFile()
@@ -168,7 +173,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Save")
-                    //icon.source: "save.svg"
+                    //icon.source: "/save.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         doSaveFile(currentFileName, homePage.txtEditor.text)
@@ -176,7 +181,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Save as")
-                    //icon.source: "saveas.svg"
+                    //icon.source: "/saveas.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         triggerSaveAsFile()
@@ -184,7 +189,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Delete")
-                    //icon.source: "delete.svg"
+                    //icon.source: "/delete.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         stackView.pop()
@@ -233,17 +238,19 @@ ApplicationWindow {
         anchors.right: parent.right
         visible: settings.useToolBar
         height: settings.useToolBar ? flow.implicitHeight/*implicitHeight*/ : 0
-
+/*
         onHeightChanged: {
-            if( toolBar.height>2*iconSize+flow.spacing ) {
-                iconSize -= 2
+            if( toolBar.height>iconSize+flow.spacing ) {
+                if( iconSize>minimalIconSize ) {
+                    iconSize -= 2
+                }
             } else if ( toolBar.height<defaultIconSize ) {
                 if( iconSize<defaultIconSize ) {
                     iconSize += 1
                 }
             }
         }
-
+*/
         Flow {
             id: flow
             anchors.fill: parent
@@ -251,7 +258,7 @@ ApplicationWindow {
 
             ToolButton {
                 id: toolButtonOpen
-                icon.source: "open-folder-with-document.svg"
+                icon.source: "/open-folder-with-document.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -263,7 +270,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSave
-                icon.source: "floppy-disk.svg"
+                icon.source: "/floppy-disk.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -275,7 +282,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonUndo
-                icon.source: "back-arrow.svg"
+                icon.source: "/back-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -286,7 +293,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonRedo
-                icon.source: "redo-arrow.svg"
+                icon.source: "/redo-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -297,7 +304,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSearch
-                icon.source: "search.svg"
+                icon.source: "/search.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -308,7 +315,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonReplace
-                icon.source: "replace.svg"
+                icon.source: "/replace.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -319,7 +326,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonPrevious
-                icon.source: "left-arrow.svg"
+                icon.source: "/left-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -330,7 +337,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonNext
-                icon.source: "right-arrow.svg"
+                icon.source: "/right-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -341,7 +348,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonShare
-                icon.source: "share.svg"
+                icon.source: "/share.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -354,7 +361,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSettings
-                icon.source: "settings.svg"
+                icon.source: "/settings.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -366,7 +373,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonClose
-                icon.source: "close.svg"
+                icon.source: "/close.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -455,6 +462,7 @@ ApplicationWindow {
         id: settings
 
         property bool useToolBar: true
+        property bool mobileUI: false // applicationData.isMobileUI
     }
 
     Connections {
@@ -505,13 +513,13 @@ ApplicationWindow {
         }
 
         function onStorageOpenFile() {
-            console.log("storage open")
-            addToOutput("storage open")
+            //console.log("storage open")
+            //addToOutput("storage open")
             storageAccess.openFile()
         }
         function onStorageCreateFile(fileNane) {
-            console.log("storage create file "+fileNane)
-            addToOutput("storage create file "+fileNane)
+            //console.log("storage create file "+fileNane)
+            //addToOutput("storage create file "+fileNane)
             setFileName(fileName, null)
             storageAccess.createFile(fileNane)
         }
@@ -531,6 +539,7 @@ ApplicationWindow {
         function onAccepted() {
             // TODO: update settings
             settings.useToolBar = settingsDialog.chbUseToolBar.checked
+            settings.mobileUI = settingsDialog.chbMobileUI.checked
 
             stackView.pop()
         }
@@ -546,7 +555,7 @@ ApplicationWindow {
         target: applicationData
 
         // used for WASM platform:
-        onReceiveOpenFileContent: {
+        function onReceiveOpenFileContent(fileName, fileContent) {
             setFileName(fileName, null)
             homePage.txtEditor.text = fileContent
         }
@@ -555,8 +564,8 @@ ApplicationWindow {
             setFileName(fileName, null)
             homePage.txtEditor.text = fileContent
         }
-        */        
-        onSendErrorText: {
+        */
+        function onSendErrorText(msg) {
             homePage.txtEditor.text += "\n" + msg
         }
     }
@@ -565,15 +574,15 @@ ApplicationWindow {
         target: storageAccess
 
         function onOpenFileContentReceived(fileUri, decodedFileUri, fileContent) {
-            console.log("onOpenFileContentReceived")
-            addToOutput("onOpenFileContentReceived")
+            //console.log("onOpenFileContentReceived")
+            //addToOutput("onOpenFileContentReceived")
             homePage.txtEditor.text = fileContent
             setFileName(fileUri, decodedFileUri)
             stackView.pop()
         }
         function onOpenFileCanceled() {
-            console.log("onOpenFileCanceled")
-            addToOutput("onOpenFileCanceled")
+            //console.log("onOpenFileCanceled")
+            //addToOutput("onOpenFileCanceled")
             stackView.pop()
         }
         function onOpenFileError(message) {
@@ -581,8 +590,8 @@ ApplicationWindow {
             stackView.pop()
         }
         function onCreateFileReceived(fileUri, decodedFileUri) {
-            console.log("create file received "+fileUri+" decoded="+decodedFileUri)
-            addToOutput("create file received "+fileUri+" decoded="+decodedFileUri)
+            //console.log("create file received "+fileUri+" decoded="+decodedFileUri)
+            //addToOutput("create file received "+fileUri+" decoded="+decodedFileUri)
             setFileName(fileUri, decodedFileUri)
         }
     }

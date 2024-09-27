@@ -1,11 +1,22 @@
 #ifndef APPLICATIONDATA_H
 #define APPLICATIONDATA_H
 
+#define _WITH_SHARING
+#define _WITH_STORAGE_ACCESS
+
 #include <QObject>
 #include <QQmlApplicationEngine>
 
+#ifdef _WITH_SHARING
 class ShareUtils;
+#else
+class ShareUtils {};
+#endif
+#ifdef _WITH_STORAGE_ACCESS
 class StorageAccess;
+#else
+class StorageAccess {};
+#endif
 
 class QQuickTextDocument;
 
@@ -14,9 +25,9 @@ void AddToLog(const QString & msg);
 #define READ_ERROR_OUTPUT "<#READ_ERROR#>"
 
 #if defined(Q_OS_ANDROID)
-#define DEFAULT_DIRECTORY           "/data/data/de.mneuroth.picoapp/files"
-#define FILES_DIR                   "/data/data/de.mneuroth.picoapp/files"
-#define SCRIPTS_DIR                 "/data/data/de.mneuroth.picoapp/files/scripts"
+#define DEFAULT_DIRECTORY           "/data/data/de.mneuroth.picotemplateapp/files"
+#define FILES_DIR                   "/data/data/de.mneuroth.picotemplateapp/files"
+#define SCRIPTS_DIR                 "/data/data/de.mneuroth.picotemplateapp/files/scripts"
 #define SDCARD_DIRECTORY            "/sdcard"
 #elif defined(Q_OS_WASM)
 #define DEFAULT_DIRECTORY           "/"

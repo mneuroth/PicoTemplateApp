@@ -1,8 +1,14 @@
 #include "storageaccess.h"
 
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < 0x060000
 #include <QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>
+#else
+#include <QJniObject>
+#define QAndroidJniObject QJniObject
+#define QAndroidJniEnvironment QJniEnvironment
+#endif
 #include <jni.h>
 #endif
 

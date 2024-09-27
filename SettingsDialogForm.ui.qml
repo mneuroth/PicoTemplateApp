@@ -12,6 +12,7 @@ Page {
     property alias btnCancel: btnCancel
     property alias btnRestoreDefaultSettings: btnRestoreDefaultSettings
     property alias chbUseToolBar: chbUseToolBar
+    property alias chbMobileUI: chbMobileUI
     property alias chbOption1: chbOption1
     property alias chbOption2: chbOption2
 
@@ -38,6 +39,12 @@ Page {
             }
 
             CheckBox {
+                id: chbMobileUI
+                enabled: true
+                text: qsTr("Mobile UI")
+            }
+
+            CheckBox {
                 id: chbOption1
                 enabled: true
                 text: qsTr("option 1")
@@ -52,8 +59,8 @@ Page {
             Row {
                 spacing: 10
 
-                anchors.top: chbOption2.bottom
-                anchors.topMargin: 10
+                //anchors.top: chbOption2.bottom
+                //anchors.topMargin: 10
 
                 Button {
                     id: btnOk

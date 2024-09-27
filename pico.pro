@@ -1,7 +1,7 @@
 QT += quick svg printsupport
 
 android {
-    QT += purchasing
+    lessThan(QT_MAJOR_VERSION, 6): QT += purchasing
 }
 
 CONFIG += c++11
@@ -62,7 +62,7 @@ android {
 
     HEADERS += android/androidshareutils.hpp
 
-    QT += androidextras
+    lessThan(QT_MAJOR_VERSION, 6): QT += androidextras
 
     equals(ANDROID_TARGET_ARCH, arm64-v8a) {
         ARCH_PATH = arm64

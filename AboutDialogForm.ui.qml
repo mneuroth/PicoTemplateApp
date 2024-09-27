@@ -35,7 +35,7 @@ Page {
 
             Text {
                 id: lblAppName
-                text: "<a href='https://play.google.com/store/apps/details?id=de.mneuroth.picoapp'>PicoApp</a>"
+                text: "<a href='https://play.google.com/store/apps/details?id=de.mneuroth.picoapp'>PicoTemplateApp</a>"
                 fontSizeMode: Text.FixedSize
                 font.pixelSize: 24
                 Layout.alignment: Qt.AlignCenter
@@ -61,7 +61,7 @@ Page {
 
             Text {
                 id: lblAppDate
-                text: qsTr("from: 14.3.2021")
+                text: qsTr("from: 27.9.2024")
                 Layout.alignment: Qt.AlignCenter
                 Layout.bottomMargin: 15
             }
@@ -75,7 +75,7 @@ Page {
 
             Text {
                 id: lblGithubPage
-                text: qsTr("<a href='https://github.com/mneuroth/PicoApp'>Github page for PicoApp</a>")
+                text: qsTr("<a href='https://github.com/mneuroth/PicoTemplateApp'>Github page for PicoTemplateApp</a>")
                 Layout.alignment: Qt.AlignCenter
             }
 

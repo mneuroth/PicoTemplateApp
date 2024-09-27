@@ -2,8 +2,12 @@
 
 #include "applicationdata.h"
 //#include "androidtasks.h"
+#ifdef _WITH_SHARING
 #include "shareutils.hpp"
+#endif
+#ifdef _WITH_STORAGE_ACCESS
 #include "storageaccess.h"
+#endif
 
 #if defined(Q_OS_ANDROID)
 //#include "android/androidshareutils.hpp"
@@ -12,7 +16,6 @@
 #else
 #include <QJniObject>
 #include <QCoreApplication>
-//#include <QtCore/6.2.2/QtCore/private/qandroidextras_p.h>
 #define QAndroidJniObject QJniObject
 #define QAndroidJniEnvironment QJniEnvironment
 #endif
@@ -84,10 +87,11 @@ ApplicationData::ApplicationData(QObject *parent, ShareUtils * pShareUtils, Stor
       m_aEngine(aEngine),
       m_bUseLocalFileDialog(false),
       m_bIsAdmin(false),
-      m_bIsMobileUI(true)
+      m_bIsMobileUI(false)
 {
     m_pShareUtils = pShareUtils;
 #if defined(Q_OS_ANDROID)
+#ifdef _WITH_SHARING
     QMetaObject::Connection result;
     result = connect(m_pShareUtils, SIGNAL(fileUrlReceived(QString)), this, SLOT(sltFileUrlReceived(QString)));
     result = connect(m_pShareUtils, SIGNAL(fileReceivedAndSaved(QString)), this, SLOT(sltFileReceivedAndSaved(QString)));
@@ -96,6 +100,7 @@ ApplicationData::ApplicationData(QObject *parent, ShareUtils * pShareUtils, Stor
     connect(m_pShareUtils, SIGNAL(shareFinished(int)), this, SLOT(sltShareFinished(int)));
     connect(m_pShareUtils, SIGNAL(shareEditDone(int, QString)), this, SLOT(sltShareEditDone(int, QString)));
     connect(m_pShareUtils, SIGNAL(shareNoAppAvailable(int)), this, SLOT(sltShareNoAppAvailable(int)));
+#endif
 #endif
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     m_bIsMobileUI = true;
@@ -279,6 +284,7 @@ QString ApplicationData::readFileContent(const QString & fileName) const
 
     if( IsAndroidStorageFileUrl(translatedFileName) )
     {
+#ifdef _WITH_STORAGE_ACCESS
         QByteArray data;
         bool ok = m_aStorageAccess.readFile(translatedFileName, data);
         if( ok )
@@ -286,6 +292,7 @@ QString ApplicationData::readFileContent(const QString & fileName) const
             return QString(data);
         }
         else
+#endif
         {
             return QString(READ_ERROR_OUTPUT);
         }
@@ -311,8 +318,12 @@ bool ApplicationData::writeFileContent(const QString & fileName, const QString &
 
     if( IsAndroidStorageFileUrl(translatedFileName) )
     {
+#ifdef _WITH_STORAGE_ACCESS
         bool ok = m_aStorageAccess.updateFile(translatedFileName, content.toUtf8());
         return ok;
+#else
+        return false;
+#endif
     }
     else
     {
@@ -515,7 +526,9 @@ bool ApplicationData::shareSimpleText(const QString & text)
 {
     if( m_pShareUtils != 0 )
     {
+#ifdef _WITH_SHARING
         m_pShareUtils->share(text, QUrl());
+#endif
         return true;
     }
     return false;
@@ -553,7 +566,11 @@ bool ApplicationData::saveDataAsPngImage(const QString & sUrlFileName, const QBy
         QBuffer aBuffer(&aArr);
         aBuffer.open(QIODevice::WriteOnly);
         aImg.save(&aBuffer, "PNG");
+#ifdef _WITH_STORAGE_ACCESS
         return m_aStorageAccess.updateFile(translatedFileName, aArr);
+#else
+        return false;
+#endif
     }
     else
     {
@@ -709,6 +726,7 @@ bool ApplicationData::writeAndSendSharedFile(const QString & fileName, const QSt
     /*bool permissionsSet =*/ QFile(tempTargetX).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser);
     int requestId = 24;
     bool altImpl = false;
+#ifdef _WITH_SHARING
     if( bSendFile )
     {
         m_pShareUtils->sendFile(tempTargetX, tr("Send file"), fileMimeType, requestId, altImpl);
@@ -717,6 +735,7 @@ bool ApplicationData::writeAndSendSharedFile(const QString & fileName, const QSt
     {
         m_pShareUtils->viewFile(tempTargetX, tr("View file"), fileMimeType, requestId, altImpl);
     }
+#endif
 
     // remark: remove temporary files in slot:  sltShareFinished() / sltShareError()
     return true;

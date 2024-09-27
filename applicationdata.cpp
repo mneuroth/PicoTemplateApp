@@ -163,7 +163,6 @@ void ApplicationData::setMobileUI(bool value)
 
 bool ApplicationData::isUseLocalFileDialog() const
 {
-    qDebug() << "isUseLocalFileDialog()" << Qt::endl;
     return m_bUseLocalFileDialog;
 }
 

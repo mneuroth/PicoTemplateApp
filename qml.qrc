@@ -12,20 +12,20 @@
         <file>AboutDialogForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>pico.png</file>
-        <file alias="menu.svg">images/menu.svg</file>
-        <file alias="menu_bars.svg">images/menu_bars.svg</file>
-        <file alias="back.svg">images/back.svg</file>
-        <file alias="share.svg">images/share.svg</file>
-        <file alias="search.svg">images/search.svg</file>
-        <file alias="replace.svg">images/replace.svg</file>
-        <file alias="settings.svg">images/settings.svg</file>
-        <file alias="close.svg">images/close.svg</file>
-        <file alias="left-arrow.svg">images/left-arrow.svg</file>
-        <file alias="right-arrow.svg">images/right-arrow.svg</file>
-        <file alias="back-arrow.svg">images/back-arrow.svg</file>
-        <file alias="redo-arrow.svg">images/redo-arrow.svg</file>
-        <file alias="open-folder-with-document.svg">images/open-folder-with-document.svg</file>
-        <file alias="floppy-disk.svg">images/floppy-disk.svg</file>
+        <file alias="images/menu.svg">images/menu.svg</file>
+        <file alias="images/menu_bars.svg">images/menu_bars.svg</file>
+        <file alias="images/back.svg">images/back.svg</file>
+        <file alias="images/share.svg">images/share.svg</file>
+        <file alias="images/search.svg">images/search.svg</file>
+        <file alias="images/replace.svg">images/replace.svg</file>
+        <file alias="images/settings.svg">images/settings.svg</file>
+        <file alias="images/close.svg">images/close.svg</file>
+        <file alias="images/left-arrow.svg">images/left-arrow.svg</file>
+        <file alias="images/right-arrow.svg">images/right-arrow.svg</file>
+        <file alias="images/back-arrow.svg">images/back-arrow.svg</file>
+        <file alias="images/redo-arrow.svg">images/redo-arrow.svg</file>
+        <file alias="images/open-folder-with-document.svg">images/open-folder-with-document.svg</file>
+        <file alias="images/floppy-disk.svg">images/floppy-disk.svg</file>
     </qresource>
     <qresource prefix="/translations">
         <file>pico_de_DE.qm</file>

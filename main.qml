@@ -132,7 +132,7 @@ ApplicationWindow {
         ToolButton {
             id: toolButton
             //text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            icon.source: stackView.depth > 1 ? "/back.svg" : "/menu_bars.svg"
+            icon.source: stackView.depth > 1 ? "images/back.svg" : "images/menu_bars.svg"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
             anchors.left: parent.left
             onClicked: {
@@ -153,7 +153,7 @@ ApplicationWindow {
             id: menuButton
             //text: "\u22EE"
             enabled: !isDialogOpen()
-            icon.source: "/menu.svg"
+            icon.source: "images/menu.svg"
             font.pixelSize: Qt.application.font.pixelSize * 2.0
             anchors.right: parent.right
             onClicked: menu.open()
@@ -165,7 +165,7 @@ ApplicationWindow {
 
                 MenuItem {
                     text: qsTr("Open")
-                    //icon.source: "/open.svg"
+                    //icon.source: "images/open.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         triggerOpenFile()
@@ -173,7 +173,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Save")
-                    //icon.source: "/save.svg"
+                    //icon.source: "images/save.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         doSaveFile(currentFileName, homePage.txtEditor.text)
@@ -181,7 +181,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Save as")
-                    //icon.source: "/saveas.svg"
+                    //icon.source: "images/saveas.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         triggerSaveAsFile()
@@ -189,7 +189,7 @@ ApplicationWindow {
                 }
                 MenuItem {
                     text: qsTr("Delete")
-                    //icon.source: "/delete.svg"
+                    //icon.source: "images/delete.svg"
                     enabled: !isDialogOpen()
                     onTriggered: {
                         stackView.pop()
@@ -258,7 +258,7 @@ ApplicationWindow {
 
             ToolButton {
                 id: toolButtonOpen
-                icon.source: "/open-folder-with-document.svg"
+                icon.source: "images/open-folder-with-document.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -270,7 +270,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSave
-                icon.source: "/floppy-disk.svg"
+                icon.source: "images/floppy-disk.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -282,7 +282,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonUndo
-                icon.source: "/back-arrow.svg"
+                icon.source: "images/back-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -293,7 +293,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonRedo
-                icon.source: "/redo-arrow.svg"
+                icon.source: "images/redo-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -304,7 +304,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSearch
-                icon.source: "/search.svg"
+                icon.source: "images/search.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -315,7 +315,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonReplace
-                icon.source: "/replace.svg"
+                icon.source: "images/replace.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -326,7 +326,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonPrevious
-                icon.source: "/left-arrow.svg"
+                icon.source: "images/left-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -337,7 +337,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonNext
-                icon.source: "/right-arrow.svg"
+                icon.source: "images/right-arrow.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -348,7 +348,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonShare
-                icon.source: "/share.svg"
+                icon.source: "images/share.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -361,7 +361,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonSettings
-                icon.source: "/settings.svg"
+                icon.source: "images/settings.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height
@@ -373,7 +373,7 @@ ApplicationWindow {
             }
             ToolButton {
                 id: toolButtonClose
-                icon.source: "/close.svg"
+                icon.source: "images/close.svg"
                 enabled: !isDialogOpen()
                 height: iconSize
                 width: height

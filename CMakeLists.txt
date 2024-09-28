@@ -26,7 +26,6 @@ qt_add_qml_module(pico
         Page2Form.ui.qml
         MobileFileDialog.qml
         MobileFileDialogForm.ui.qml
-        NativeFileDialog.qml
         SettingsDialog.qml
         SettingsDialogForm.ui.qml
         AboutDialog.qml

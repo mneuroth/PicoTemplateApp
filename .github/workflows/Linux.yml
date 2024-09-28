@@ -46,6 +46,8 @@ jobs:
         ls -lrt
         cmake -S . -B ./build
         ls -lrt
+        cd ./build
+        ls -lrt
         make
         ls -lrt
 

@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import QtQuick.Dialogs 1.2
+//import QtQuick.Dialogs 1.2
 import Qt.labs.platform 1.1 as Dialog
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
@@ -442,7 +442,7 @@ ApplicationWindow {
         visible: false
     }
 
-    FileDialog {
+    Dialog.FileDialog {
         id: fileDialog
         objectName: "fileDialog"
         visible: false
@@ -453,9 +453,11 @@ ApplicationWindow {
 
         property bool openMode: true
 
-        selectExisting: openMode ? true : false
-        selectMultiple: false
-        selectFolder: false
+        fileMode: openMode ? FileDialog.OpenFile : FileDialog.SaveFile
+
+        //selectExisting: openMode ? true : false
+        //selectMultiple: false
+        //selectFolder: false
     }
 
     Settings {

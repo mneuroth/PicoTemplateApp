@@ -42,7 +42,7 @@ jobs:
         extra: # optional
     - name: Install Qt and compile
       run: |
-mkdir build
+        mkdir build
         ls -lrt
         cmake -S . -B ./build
         ls -lrt

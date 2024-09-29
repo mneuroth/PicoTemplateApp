@@ -3,7 +3,7 @@ import QtQuick 2.12
 import Qt.labs.platform 1.1 as DialogLabs
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
-import PicoTemplateApp
+import PicoTemplateApp 1.0
 
 ApplicationWindow {
     id: window
@@ -491,10 +491,6 @@ ApplicationWindow {
         visible: false
     }
 
-    Store {
-        id: myStoreId
-    }
-
     Dialog {
         id: infoDialog
         visible: false
@@ -522,6 +518,12 @@ ApplicationWindow {
         onAccepted: {
             console.log("Close error msg")
         }
+    }
+
+    // For Qt 5.15.2 -> comment out the sections for Store and Product
+
+    Store {
+        id: myStoreId
     }
 
     Product {
@@ -650,17 +652,17 @@ ApplicationWindow {
     Connections {
         target: fileDialog
 
-        onAccepted: {
+        function onAccepted() {
             if( fileDialog.openMode ) {
-                processOpenFileCallback(fileDialog.fileUrl)
+                processOpenFileCallback(fileDialog.file/*Url*/)
             }
             else {
-                processSaveFileCallback(fileDialog.fileUrl)
+                processSaveFileCallback(fileDialog.file/*Url*/)
             }
             fileDialog.close()
             focusToEditor()
         }
-        onRejected: {
+        function onRejected() {
             fileDialog.close()
             focusToEditor()
         }

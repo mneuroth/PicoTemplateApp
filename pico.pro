@@ -32,7 +32,7 @@ HEADERS += \
         storageaccess.h \
         shareutils.hpp
 
-include($$PWD/purchasing/purchasing.pri)
+greaterThan(QT_MAJOR_VERSION, 5): include($$PWD/purchasing/purchasing.pri)
 
 RESOURCES += qml.qrc
 

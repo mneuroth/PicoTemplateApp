@@ -28,6 +28,8 @@
         <file alias="images/redo-arrow.svg">images/redo-arrow.svg</file>
         <file alias="images/open-folder-with-document.svg">images/open-folder-with-document.svg</file>
         <file alias="images/floppy-disk.svg">images/floppy-disk.svg</file>
+        <file alias="images/folder-black-24dp.svg">images/folder-black-24dp.svg</file>
+        <file alias="images/text_snippet-black-24dp.svg">images/text_snippet-black-24dp.svg</file>
     </qresource>
     <qresource prefix="/translations">
         <file>pico_de_DE.qm</file>

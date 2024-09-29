@@ -42,7 +42,7 @@ jobs:
         name: release_url
         path: release_url.txt        
 
-  linux_wasm_6_5_2:
+  linux_wasm_6_2_2:
   
     runs-on: ubuntu-latest
     needs: create_release
@@ -55,7 +55,7 @@ jobs:
         # Directory to install Qt
         dir: # optional
         # Version of Qt to install
-        version: '6.5.2'
+        version: '6.2.2'
         # Host platform
         host: # optional
         # Target platform for build
@@ -78,18 +78,18 @@ jobs:
         extra: # optional
     - name: Install Qt and compile
       run: |
-        emsdk install 3.1.25
-        emsdk activate --embedded 3.1.25
+        emsdk install 2.0.14
+        emsdk activate --embedded 2.0.14
         . $EMSDK/emsdk_env.sh
         em++ --version
         ls -lrt
-        ../Qt/6.5.2/wasm_32/bin/qmake -r pico.pro
+        ../Qt/6.2.2/wasm_32/bin/qmake -r pico.pro
         ls -lrt
         make
         ls -lrt
-        zip pico_wasm_6_5_2.zip pico.js pico.wasm pico.html qtlogo.svg qtloader.js
+        zip pico_wasm_6_2_2.zip pico.js pico.wasm pico.html qtlogo.svg qtloader.js
         ls -lrt
-        unzip -v pico_wasm_6_5_2.zip
+        unzip -v pico_wasm_6_2_2.zip
         pwd
     # this step is added for the release    
     - name: Upload Release Asset
@@ -100,8 +100,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: pico_wasm_6_7_2.zip
-        asset_name: pico_wasm_6_7_2.zip
+        asset_path: pico_wasm_6_2_2.zip
+        asset_name: pico_wasm_6_2_2.zip
         asset_content_type: application/zip
 
   linux_wasm_5_15_2:

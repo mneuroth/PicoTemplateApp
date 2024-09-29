@@ -479,7 +479,7 @@ ApplicationWindow {
 
         property bool openMode: true
 
-        fileMode: openMode ? FileDialog.OpenFile : FileDialog.SaveFile
+        fileMode: openMode ? DialogLabs.FileDialog.OpenFile : DialogLabs.FileDialog.SaveFile
 
         //selectExisting: openMode ? true : false
         //selectMultiple: false

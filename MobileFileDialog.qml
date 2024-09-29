@@ -224,7 +224,7 @@ MobileFileDialogForm {
 
                 Image {
                     id: itemIcon
-                    source: fileIsDir ? "directory.svg" : "file.svg"
+                    source: fileIsDir ? "images/folder-black-24dp.svg" : "images/text_snippet-black-24dp.svg"
 
                     Layout.row: 0
                     Layout.column: 0

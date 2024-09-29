@@ -56,7 +56,6 @@ jobs:
         dir
         dir ./build
         cmake --build ./build --target all
-        dir ./build
         cd ./build
         dir
 

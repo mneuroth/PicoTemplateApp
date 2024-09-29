@@ -1,8 +1,17 @@
-QT += quick quickcontrols2 qml svg printsupport
+QT += quick quickcontrols2 qml svg printsupport core core-private
 
 android {
     lessThan(QT_MAJOR_VERSION, 6): QT += purchasing
 }
+
+INCLUDEPATH += purchasing/qmltypes \
+    purchasing/inapp \
+    $$PWD
+
+CONFIG += qmltypes
+QML_IMPORT_PATH = $$PWD/qmfunctions.h
+QML_IMPORT_NAME = PicoTemplateApp
+QML_IMPORT_MAJOR_VERSION = 1
 
 CONFIG += c++11
 
@@ -22,6 +31,8 @@ HEADERS += \
         applicationui.hpp \
         storageaccess.h \
         shareutils.hpp
+
+include($$PWD/purchasing/purchasing.pri)
 
 RESOURCES += qml.qrc
 
@@ -53,7 +64,11 @@ DISTFILES += \
     android/src/de/mneuroth/utils/QSharePathResolver.java \
     android/src/de/mneuroth/utils/QShareUtils.java \
     android/src/de/mneuroth/utils/QStorageAccess.java \
-    android/src/de/mneuroth/utils/Tuple.java
+    android/src/de/mneuroth/utils/Tuple.java \
+    android/src/org/qtproject/qt/android/purchasing/Security.java \
+    android/src/org/qtproject/qt/android/purchasing/InAppPurchase.java \
+    android/src/org/qtproject/qt/android/purchasing/Base64.java \
+    android/src/org/qtproject/qt/android/purchasing/Base64DecoderException.java
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

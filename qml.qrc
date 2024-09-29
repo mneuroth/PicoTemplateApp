@@ -10,6 +10,8 @@
         <file>SettingsDialogForm.ui.qml</file>
         <file>AboutDialog.qml</file>
         <file>AboutDialogForm.ui.qml</file>
+        <file>SupportDialog.qml</file>
+        <file>SupportDialogForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>pico.png</file>
         <file alias="images/menu.svg">images/menu.svg</file>

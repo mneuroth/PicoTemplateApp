@@ -1,8 +1,9 @@
 import QtQuick 2.12
 //import QtQuick.Dialogs 1.2
-import Qt.labs.platform 1.1 as Dialog
+import Qt.labs.platform 1.1 as DialogLabs
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
+import PicoTemplateApp
 
 ApplicationWindow {
     id: window
@@ -120,10 +121,27 @@ ApplicationWindow {
         stackView.push(settingsDialog)
     }
 
+    function showSupportDialog() {
+        stackView.push(supportDialog)
+    }
+
     function isDialogOpen() {
         return stackView.currentItem === aboutDialog ||
                stackView.currentItem === mobileFileDialog ||
-               stackView.currentItem === settingsDialog
+               stackView.currentItem === settingsDialog ||
+               stackView.currentItem === supportDialog
+    }
+
+    function showInfoDialog(msg, title) {
+        infoDialog.messageText = msg
+        if( title !== undefined ) {
+            infoDialog.title = title
+        }
+        infoDialog.open()
+    }
+
+    function showThankYouDialog(supportLevel) {
+        showInfoDialog(qsTr("Thank you for supporting the development of this application !"), qsTr("Thank you !"))
     }
 
     header: ToolBar {
@@ -204,6 +222,14 @@ ApplicationWindow {
                         mobileFileDialog.forceActiveFocus()
                     }
                 }                
+                MenuSeparator {}
+                MenuItem {
+                    text: qsTr("Support")
+                    enabled: !isDialogOpen()
+                    onTriggered: {
+                        showSupportDialog()
+                    }
+                }
                 MenuSeparator {}
                 MenuItem {
                     text: qsTr("Settings")
@@ -442,7 +468,7 @@ ApplicationWindow {
         visible: false
     }
 
-    Dialog.FileDialog {
+    DialogLabs.FileDialog {
         id: fileDialog
         objectName: "fileDialog"
         visible: false
@@ -460,8 +486,162 @@ ApplicationWindow {
         //selectFolder: false
     }
 
+    SupportDialog {
+        id: supportDialog
+        visible: false
+    }
+
+    Store {
+        id: myStoreId
+    }
+
+    Dialog {
+        id: infoDialog
+        visible: false
+        title: qsTr("Error")
+        width: 300
+        height: 200
+
+        property alias messageText: messageId.text
+
+        Flow {
+            Label {
+                id: messageId
+                //text: "hello test !"
+            }
+
+            Button {
+                text: "Close"
+
+                onClicked: infoDialog.close()
+            }
+        }
+
+        //standardButtons: StandardButton.Ok
+        //buttons: Dialog.MessageDialog.Ok
+        onAccepted: {
+            console.log("Close error msg")
+        }
+    }
+
+    Product {
+        id: supportLevel0
+        identifier: "support_level_0"
+        store: myStoreId
+        type: Product.Unlockable
+
+        property bool purchasing: false
+
+        onPurchaseSucceeded: {
+            //showInfoDialog(qsTr("Purchase successfull."))
+            settings.supportLevel = 0
+
+            transaction.finalize()
+
+            showThankYouDialog(settings.supportLevel)
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseFailed: {
+            showInfoDialog(qsTr("Purchase not completed."))
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseRestored: {
+            //showInfoDialog(qsTr("Purchase restored."))
+            settings.supportLevel = 0
+
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+    }
+
+    Product {
+        id: supportLevel1
+        identifier: "support_level_1"
+        store: myStoreId
+        type: Product.Unlockable
+
+        property bool purchasing: false
+
+        onPurchaseSucceeded: {
+            settings.supportLevel = 1
+
+            transaction.finalize()
+
+            showThankYouDialog(settings.supportLevel)
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseFailed: {
+            showInfoDialog(qsTr("Purchase not completed."))
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseRestored: {
+            settings.supportLevel = 1
+
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+    }
+
+    Product {
+        id: supportLevel2
+        identifier: "support_level_2"
+        store: myStoreId
+        type: Product.Unlockable
+
+        property bool purchasing: false
+
+
+        onPurchaseSucceeded: {
+            settings.supportLevel = 2
+
+            transaction.finalize()
+
+            showThankYouDialog(settings.supportLevel)
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseFailed: {
+            showInfoDialog(qsTr("Purchase not completed."))
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+
+        onPurchaseRestored: {
+            settings.supportLevel = 2
+
+            transaction.finalize()
+
+            // Reset purchasing flag
+            purchasing = false
+        }
+    }
+
     Settings {
         id: settings
+
+        property int supportLevel: -1   // no support level at all
 
         property bool useToolBar: true
         property bool mobileUI: false // applicationData.isMobileUI

@@ -19,7 +19,7 @@ jobs:
         # Directory to install Qt
         dir: # optional
         # Version of Qt to install
-        version: '6 .7.2'
+        version: '6.7.2'
         # Host platform
         host: 'mac'
         # Target platform for build

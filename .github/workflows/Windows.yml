@@ -54,12 +54,11 @@ jobs:
         dir
         cmake -S . -B ./build
         dir
+        dir ./build
+        cmake --build ./build --target all
+        dir ./build
         cd ./build
         dir
-        nmake
-        dir
-        dir release
-        dir debug
 
   windows_6_7_2_msc_build:
 
